@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#F7F5EC" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <title>Agri Pro Services | Pest Control, Gardening &amp; Disinfection in Lebanon</title>
 <meta name="description" content="Pest control, gardening &amp; disinfection across Lebanon — serving Saidoun, Jezzine &amp; South Lebanon. Safe, family-friendly, proven. Free assessment." />
 
@@ -15,8 +17,10 @@
 <meta property="og:title" content="Agri Pro Services | Pest Control, Gardening &amp; Disinfection in Lebanon" />
 <meta property="og:description" content="Integrated pest control, gardening &amp; disinfection across Lebanon — serving Saidoun, Jezzine District &amp; the South. Safe, family-friendly, proven." />
 <meta property="og:url" content="https://agriproservices.netlify.app/" />
-<!-- TODO: replace with a purpose-made 1200×630 og-image.jpg; using the brand mark as a placeholder for now -->
-<meta property="og:image" content="https://agriproservices.netlify.app/assets/img/logo-mark.png" />
+<meta property="og:image" content="https://agriproservices.netlify.app/assets/img/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Agri Pro Services — From Roots to Roofs. Gardening, pest control and disinfection in Lebanon." />
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="ar_LB" />
 
@@ -24,7 +28,8 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Agri Pro Services | Pest Control, Gardening &amp; Disinfection in Lebanon" />
 <meta name="twitter:description" content="Integrated pest control, gardening &amp; disinfection across Lebanon — serving Saidoun, Jezzine District &amp; the South." />
-<meta name="twitter:image" content="https://agriproservices.netlify.app/assets/img/logo-mark.png" />
+<meta name="twitter:image" content="https://agriproservices.netlify.app/assets/img/og-image.png" />
+<meta name="twitter:image:alt" content="Agri Pro Services — From Roots to Roofs. Gardening, pest control and disinfection in Lebanon." />
 
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-mark.svg" />
 
@@ -69,33 +74,35 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Garamond.woff2" crossorigin />
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Garamond-Italic.woff2" crossorigin />
 
-<!-- Arabic UI font (Helvetica & Garamond have no Arabic glyphs) — loaded async, non-render-blocking -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-<noscript><link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet" /></noscript>
+<!-- Arabic UI font (Helvetica & Garamond carry no Arabic glyphs). Fetched only once the
+     visitor is actually reading Arabic — see apsArabicFont() below — so English visitors
+     pay nothing for two extra origins and a font they never render. -->
 
 <style>
 /* ============ FONTS ============ */
-@font-face{font-family:'Helvetica APS';src:url('assets/fonts/Helvetica-Light.woff2') format('woff2'),url('assets/fonts/Helvetica-Light.ttf') format('truetype');font-weight:300;font-display:swap}
-@font-face{font-family:'Helvetica APS';src:url('assets/fonts/Helvetica.woff2') format('woff2'),url('assets/fonts/Helvetica.ttf') format('truetype');font-weight:400;font-display:swap}
-@font-face{font-family:'Helvetica APS';src:url('assets/fonts/Helvetica-Bold.woff2') format('woff2'),url('assets/fonts/Helvetica-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
-@font-face{font-family:'Garamond APS';src:url('assets/fonts/Garamond.woff2') format('woff2'),url('assets/fonts/Garamond.ttf') format('truetype');font-weight:400;font-display:swap}
-@font-face{font-family:'Garamond APS';src:url('assets/fonts/Garamond-Italic.woff2') format('woff2'),url('assets/fonts/Garamond-Italic.ttf') format('truetype');font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:'Garamond APS';src:url('assets/fonts/Garamond-Bold.woff2') format('woff2'),url('assets/fonts/Garamond-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+/* Subset to Latin + punctuation (see tools/subset-fonts.sh) — 411KB -> 162KB.
+   Only the four faces the page actually renders are declared; the TTF fallbacks are
+   gone because every browser that reaches this CSS supports woff2. */
+@font-face{font-family:'Helvetica APS';src:url('assets/fonts/Helvetica.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Helvetica APS';src:url('assets/fonts/Helvetica-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Garamond APS';src:url('assets/fonts/Garamond.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Garamond APS';src:url('assets/fonts/Garamond-Italic.woff2') format('woff2');font-weight:400;font-style:italic;font-display:swap}
 
 /* ============ TOKENS (APS brand guidelines) ============ */
 :root{
   --lime:#89B449;
   --lime-tint:#CBDDA8;
-  --green:#417F3E;
+  --lime-pale:#E4EFD2;   /* small text on the green panels (AA over --green-panel) */
+  --green:#417F3E;       /* brand green: fills, buttons, large display text */
+  --green-ink:#376C34;   /* same hue, darkened for small text (AA over bg/tile/card) */
+  --green-panel:#3A7137; /* light end of the green panel gradients, so cream text clears AA */
   --green-deep:#2E5A2C;
   --ink:#231F20;
   --cream:#F4F2E9;
   --bg:#F7F5EC;          /* page */
   --tile:#EDEADC;        /* partner tiles / alt surfaces */
   --card:#FFFFFF;
-  --muted:#6E6A5E;
+  --muted:#666256;
   --line:rgba(35,31,32,.09);
   --sans:'Helvetica APS','Helvetica Neue',Arial,sans-serif;
   --serif:'Garamond APS','EB Garamond',Georgia,serif;
@@ -104,6 +111,9 @@
   --radius:18px;
   --ease:cubic-bezier(.2,.7,.2,1);
   --shadow-md:0 18px 40px -18px rgba(35,31,32,.22);
+  /* Brand mark used as a watermark in three places; inlined so the hero paints
+     without waiting on a separate request. */
+  --mark:url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201080%201080%22%3E%3Cpath%20fill=%22%23f4f2e9%22%20d=%22m1081.24,1081.24H-1.24V-1.24h1082.49v1082.49Z%22/%3E%3Ccircle%20fill=%22%2389b449%22%20cx=%22535.4%22%20cy=%22312.43%22%20r=%2266.45%22/%3E%3Cpath%20fill=%22%23417f3e%22%20d=%22m488.14,399.95c-8.03-2.85-16.37-5.06-24.94-6.56-8.75-1.53-17.74-2.33-26.92-2.33h-155.58v156.42c0,28.87,7.78,55.9,21.34,79.11,18.43,31.56,47.56,56.03,82.37,68.4,16.22,5.76,33.68,8.9,51.86,8.9,9.18,0,18.17-.8,26.92-2.33v-85.81c-8.75,3.8-18.41,5.9-28.56,5.9-39.65,0-71.78-32.08-71.78-71.65v-71.65h71.78c10.44,0,20.35,2.22,29.3,6.22,3.13,1.4,6.13,3.02,9,4.83,3.97-11.66,9.07-22.79,15.2-33.25,7.95-13.55,17.58-25.98,28.63-37.01,1.14-1.14,2.3-2.26,3.48-3.38-9.98-6.44-20.74-11.78-32.11-15.82Z%22/%3E%3Cpath%20fill=%22%2389b449%22%20d=%22m591.86,695.04c9.81,3.49,20.08,6.01,30.69,7.46,6.92.96,13.99,1.44,21.17,1.44,18.18,0,35.65-3.14,51.86-8.91,34.83-12.37,63.97-36.87,82.41-68.44,13.55-23.2,21.32-50.24,21.32-79.09v-156.45h-155.59c-7.18,0-14.24.49-21.17,1.44-10.61,1.45-20.88,3.97-30.69,7.46-13.3,4.72-25.76,11.21-37.11,19.19-5.15,3.62-10.08,7.54-14.75,11.75-20.01,18-35.35,41.13-43.99,67.34-2.62,7.95-4.63,16.18-5.96,24.64-1.26,8.03-1.92,16.26-1.92,24.64v286.52h35.01c37.95,0,68.72-30.77,68.72-68.72v-70.27Zm-6.59-182.59c7.53-12.2,18.62-21.97,31.83-27.88,8.94-4,18.86-6.22,29.3-6.22h71.78v71.65c0,39.57-32.14,71.65-71.78,71.65-10.44,0-20.35-2.22-29.3-6.22-25.04-11.2-42.48-36.28-42.48-65.43,0-13.77,3.89-26.63,10.64-37.56Z%22/%3E%3C/svg%3E");
 }
 
 /* ============ BASE ============ */
@@ -121,11 +131,18 @@ ul{list-style:none}
 section{position:relative;scroll-margin-top:90px}
 .container{max-width:var(--maxw);margin:0 auto;padding-inline:clamp(20px,5vw,48px)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:absolute;inset-inline-start:16px;top:-100px;z-index:200;padding:12px 20px;border-radius:0 0 12px 12px;
+  background:var(--green-deep);color:#fff;font-weight:700;font-size:.9rem;transition:top .2s var(--ease)}
+.skip-link:focus{top:0}
+/* Off-screen SVG sprite; carries the reusable brand mark for <use>. */
+.svg-sprite{position:absolute;width:0;height:0;overflow:hidden}
+/* 1px probe that tells the nav when the page has scrolled, so no scroll handler is needed. */
+.nav-sentinel{position:absolute;top:30px;inset-inline-start:0;width:1px;height:1px;pointer-events:none}
 .section{padding-block:clamp(76px,10vw,128px)}
 .serif{font-family:var(--serif)}
 .eyebrow{
   font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--green);display:inline-flex;align-items:center;gap:.6em;
+  color:var(--green-ink);display:inline-flex;align-items:center;gap:.6em;
 }
 .eyebrow::before{content:"";width:26px;height:2px;background:var(--lime);display:inline-block}
 .accent{color:var(--green);font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:0}
@@ -183,7 +200,7 @@ section{position:relative;scroll-margin-top:90px}
 .nav__links a:not(.btn):hover::after,.nav__links a:not(.btn).active::after{width:100%}
 .nav__cta{padding:12px 20px;font-size:.9rem}
 .lang-toggle{
-  font-family:var(--arabic);font-size:.88rem;font-weight:700;color:var(--green);
+  font-family:var(--arabic);font-size:.88rem;font-weight:700;color:var(--green-ink);
   background:transparent;border:1.5px solid rgba(65,127,62,.35);border-radius:100px;
   padding:9px 18px;cursor:pointer;transition:.3s var(--ease);
 }
@@ -193,12 +210,12 @@ section{position:relative;scroll-margin-top:90px}
 
 /* ============ HERO ============ */
 .hero{
-  min-height:92vh;display:flex;align-items:center;
+  min-height:92vh;min-height:92svh;display:flex;align-items:center;
   padding:130px 0 40px;background:var(--bg);overflow:hidden;
 }
 .hero::before{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:url('assets/img/logo-mark.svg');background-size:110px;opacity:.02;
+  background-image:var(--mark);background-size:110px;opacity:.02;
   -webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 75%);
   mask-image:linear-gradient(100deg,transparent 30%,#000 75%);
 }
@@ -234,6 +251,7 @@ section{position:relative;scroll-margin-top:90px}
 .about{background:var(--card)}
 .about__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:stretch}
 .about__body .body{font-family:var(--serif);font-size:1.1rem;color:var(--muted);line-height:1.75;max-width:36em}
+.about__body .body+.body{margin-top:1.1em}
 /* Values keyed to the brand ramp: each tile carries one layer, roots → roofs */
 .values{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
 .value-tile{
@@ -241,20 +259,25 @@ section{position:relative;scroll-margin-top:90px}
   padding:22px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);
 }
 .value-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+/* Each tile carries one layer of the brand ramp, roots -> roofs, keyed by position. */
+.value-tile:nth-child(1){--c:var(--green-deep)}
+.value-tile:nth-child(2){--c:var(--green)}
+.value-tile:nth-child(3){--c:var(--lime)}
+.value-tile:nth-child(4){--c:var(--lime-tint)}
 .value-tile__dot{display:block;width:28px;height:9px;border-radius:100px;background:var(--c,var(--lime));margin-bottom:14px}
 .value-tile h3{font-size:1.04rem;margin-bottom:5px}
 .value-tile p{font-family:var(--serif);font-size:.95rem;color:var(--muted);line-height:1.55}
 /* Vision card: eyebrow up top, statement anchored at the base; ramp rule grows out of it */
 .vision-card{
   position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:44px;
-  background:linear-gradient(165deg,var(--green) 0%,var(--green-deep) 88%);
+  background:linear-gradient(165deg,var(--green-panel) 0%,var(--green-deep) 88%);
   border-radius:24px;padding:clamp(28px,3.5vw,46px);color:var(--cream);overflow:hidden;
 }
 .vision-card::before{
   content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:6px;
   background:linear-gradient(to top,var(--green-deep),var(--green) 30%,var(--lime) 62%,var(--lime-tint));
 }
-.vision-card .eyebrow{color:var(--lime-tint)}
+.vision-card .eyebrow{color:var(--lime-pale)}
 .vision-card .eyebrow::before{background:var(--lime-tint)}
 .vision-card>p{font-family:var(--serif);font-style:italic;font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.55;color:#fff;max-width:22em}
 
@@ -279,9 +302,10 @@ section{position:relative;scroll-margin-top:90px}
 .svc h3{font-size:1.45rem;margin-bottom:10px}
 .svc>p{font-family:var(--serif);color:var(--muted);font-size:1.05rem;line-height:1.65;max-width:34em}
 .svc__chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 28px}
-.chip{padding:8px 15px;border-radius:100px;font-size:.82rem;font-weight:700;color:var(--green);background:rgba(65,127,62,.09);transition:background .3s var(--ease)}
+.svc__chips--spaced{margin-top:26px}
+.chip{padding:8px 15px;border-radius:100px;font-size:.82rem;font-weight:700;color:var(--green-ink);background:rgba(65,127,62,.09);transition:background .3s var(--ease)}
 .svc:not(.svc--goal):hover .chip{background:rgba(137,180,73,.16)}
-.svc__link{margin-top:auto;display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:.95rem;color:var(--green)}
+.svc__link{margin-top:auto;display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:.95rem;color:var(--green-ink)}
 .svc__link .arr{
   width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(65,127,62,.35);
   display:flex;align-items:center;justify-content:center;transition:.35s var(--ease);
@@ -290,7 +314,7 @@ section{position:relative;scroll-margin-top:90px}
 .svc:hover .svc__link .arr{background:var(--green);border-color:var(--green);color:#fff}
 /* dark goal card */
 .svc--goal{background:linear-gradient(150deg,var(--green-deep),var(--ink) 92%);color:var(--cream);justify-content:center;gap:28px}
-.svc--goal::after{content:"";position:absolute;inset:0;background-image:url('assets/img/logo-mark.svg');background-size:120px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
+.svc--goal::after{content:"";position:absolute;inset:0;background-image:var(--mark);background-size:120px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
 .svc--goal>p{font-family:var(--sans);color:#fff;font-size:clamp(1.5rem,2.6vw,2.05rem);font-weight:700;letter-spacing:-.02em;line-height:1.3;position:relative;z-index:1}
 .svc--goal .accent{color:var(--lime)}
 .svc--goal .btn{position:relative;z-index:1}
@@ -316,27 +340,27 @@ section{position:relative;scroll-margin-top:90px}
 }
 .contact-panel__info{
   position:relative;display:flex;flex-direction:column;
-  background:linear-gradient(155deg,var(--green) 0%,var(--green-deep) 100%);
+  background:linear-gradient(155deg,var(--green-panel) 0%,var(--green-deep) 100%);
   color:var(--cream);padding:clamp(30px,4.5vw,56px);
 }
-.contact-panel__info::before{content:"";position:absolute;inset:0;background-image:url('assets/img/logo-mark.svg');background-size:110px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
+.contact-panel__info::before{content:"";position:absolute;inset:0;background-image:var(--mark);background-size:110px;opacity:.06;mix-blend-mode:screen;pointer-events:none}
 .contact-panel__info>*{position:relative}
-.contact-panel__info .eyebrow{color:var(--lime-tint)}
+.contact-panel__info .eyebrow{color:var(--lime-pale)}
 .contact-panel__info .eyebrow::before{background:var(--lime-tint)}
 .contact-panel__info h2{color:#fff;font-size:clamp(1.7rem,3.2vw,2.5rem);margin:14px 0 12px}
 .contact-panel__info .accent{color:var(--lime-tint)}
-.contact-panel__info .desc{font-family:var(--serif);font-size:1.08rem;color:rgba(244,242,233,.85);margin-bottom:36px;max-width:26em}
+.contact-panel__info .desc{font-family:var(--serif);font-size:1.08rem;color:var(--cream);margin-bottom:36px;max-width:26em}
 .c-rows{margin-top:auto;display:flex;flex-direction:column;gap:6px}
 .c-row{display:flex;align-items:center;gap:14px;padding:11px 12px;border-radius:14px;transition:background .3s var(--ease)}
 a.c-row:hover{background:rgba(255,255,255,.09)}
-.c-row .ic{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.13);color:var(--lime-tint)}
+.c-row .ic{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.13);color:var(--lime-pale)}
 .c-row .ic svg{width:20px;height:20px}
-.c-row .k{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,242,233,.6)}
+.c-row .k{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lime-pale)}
 .c-row .v{font-weight:700;color:#fff;font-size:.98rem;line-height:1.35}
 .contact-panel__form{background:#fff;padding:clamp(28px,4vw,52px)}
 .form h3{font-size:1.45rem;margin-bottom:6px}
 .form .intro{font-family:var(--serif);color:var(--muted);margin-bottom:26px;font-size:1.02rem}
-.form label{display:block;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+.form label{display:block;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green-ink);margin-bottom:8px}
 .form .row{margin-bottom:18px}
 .form .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
 .form .row-2 .row{margin-bottom:0}
@@ -353,7 +377,7 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
   background-repeat:no-repeat;background-position:right 16px center;
 }
 [dir="rtl"] .form select{background-position:left 16px center}
-.form input::placeholder,.form textarea::placeholder{color:#A8A293}
+.form input::placeholder,.form textarea::placeholder{color:#767061}
 .form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--lime);background:#fff;box-shadow:0 0 0 4px rgba(137,180,73,.15)}
 .form textarea{resize:vertical;min-height:104px}
 .form .btn{width:100%;margin-top:6px}
@@ -380,27 +404,37 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
 .footer__social svg{width:17px;height:17px}
 
 /* ============ PRELOADER ============ */
+/* Only shown when JS is there to take it away again, and only once per session.
+   It sits directly on top of the LCP element, so its lifetime is kept short. */
 .preloader{
-  position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:999;display:none;flex-direction:column;
   align-items:center;justify-content:center;gap:24px;background:var(--bg);
-  transition:opacity .55s var(--ease),visibility .55s var(--ease);
+  transition:opacity .3s var(--ease),visibility .3s var(--ease);
 }
-.preloader.done{opacity:0;visibility:hidden;pointer-events:none}
-.pl-skip .preloader{display:none}
+.js .preloader{display:flex}
+.js.pl-skip .preloader,.preloader.done{display:none}
 .preloader__mark{width:clamp(76px,9vw,104px);height:auto}
 .preloader__mark .pl-base{fill:var(--lime-tint);opacity:.4}
-.preloader__mark .pl-fill{fill:var(--green);clip-path:inset(100% 0 0 0);animation:plWipe 1s var(--ease) .15s forwards}
+.preloader__mark .pl-fill{fill:var(--green);clip-path:inset(100% 0 0 0);animation:plWipe .45s var(--ease) .05s forwards}
 .preloader__tag{
   font-size:.72rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
-  color:var(--muted);opacity:0;animation:plFade .6s var(--ease) .8s forwards;
+  color:var(--muted);opacity:0;animation:plFade .3s var(--ease) .18s forwards;
 }
 @keyframes plWipe{to{clip-path:inset(0 0 0 0)}}
 @keyframes plFade{to{opacity:1}}
 
 /* ============ REVEAL ============ */
-.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.reveal.in{opacity:1;transform:none}
-.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+/* Scoped to .js: without scripting nothing is ever hidden, so a blocked or failed
+   script degrades to a fully visible page instead of a blank one. */
+.js .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+.js .reveal.d1{transition-delay:.1s}.js .reveal.d2{transition-delay:.2s}
+.js .reveal.d3{transition-delay:.3s}.js .reveal.d4{transition-delay:.4s}
+/* The hero holds the LCP element: every millisecond of delay here is added to LCP,
+   so it gets a tighter curve than the scroll-triggered sections below it. */
+.js .hero .reveal{transition-duration:.5s}
+.js .hero .reveal.d1,.js .hero .reveal.d2{transition-delay:.05s}
+.js .hero .reveal.d3{transition-delay:.1s}
 
 /* ============ ARABIC / RTL ============ */
 [dir="rtl"] body,[dir="rtl"] .btn,[dir="rtl"] input,[dir="rtl"] select,[dir="rtl"] textarea{font-family:var(--arabic)}
@@ -436,12 +470,15 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
 }
 @media(max-width:680px){
   .nav__links{
-    position:fixed;top:0;inset-inline-end:0;height:100vh;width:min(80vw,320px);
+    position:fixed;top:0;inset-inline-end:0;height:100vh;height:100svh;width:min(80vw,320px);
     flex-direction:column;justify-content:center;gap:26px;background:var(--ink);
-    transform:translateX(100%);transition:transform .4s var(--ease);padding:40px;
+    transform:translateX(100%);padding:40px;
+    /* visibility keeps the off-screen drawer out of the tab order, so keyboard
+       users cannot focus links they cannot see */
+    visibility:hidden;transition:transform .4s var(--ease),visibility .4s var(--ease);
   }
   [dir="rtl"] .nav__links{transform:translateX(-100%)}
-  .nav__links.open{transform:none}
+  .nav__links.open{transform:none;visibility:visible}
   .nav__links a:not(.btn){color:var(--cream);font-size:1.15rem}
   .nav__toggle{display:flex;z-index:110}
   .nav__toggle.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg);background:var(--cream)}
@@ -453,20 +490,46 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
   .form .row-2{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   *{animation:none!important;transition-duration:.01ms!important}
-  .reveal{opacity:1;transform:none}
+  .js .reveal{opacity:1;transform:none}
   .preloader__mark .pl-fill{clip-path:none}
   .preloader__tag{opacity:1}
 }
 </style>
-<noscript><style>.preloader{display:none}.reveal{opacity:1;transform:none}</style></noscript>
-<!-- Logo reveal plays once per session: flag returning visitors before first paint -->
-<script>try{if(sessionStorage.getItem('aps-seen'))document.documentElement.classList.add('pl-skip')}catch(e){}</script>
+<script>
+/* Runs before first paint. Marks that scripting is available (the reveal and
+   preloader styles are scoped to .js), restores a stored Arabic preference so the
+   page starts in RTL with the right font instead of reflowing into it, and skips
+   the logo reveal for anyone who has already seen it this session. */
+function apsArabicFont(){
+  if(document.getElementById('aps-ar-font')) return;
+  var frag=document.createDocumentFragment(), l, i,
+      origins=[['https://fonts.googleapis.com',0],['https://fonts.gstatic.com',1]];
+  for(i=0;i<origins.length;i++){
+    l=document.createElement('link'); l.rel='preconnect'; l.href=origins[i][0];
+    if(origins[i][1]) l.crossOrigin=''; frag.appendChild(l);
+  }
+  l=document.createElement('link'); l.id='aps-ar-font'; l.rel='stylesheet';
+  l.href='https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap';
+  frag.appendChild(l); document.head.appendChild(frag);
+}
+(function(){
+  var d=document.documentElement;
+  d.className = d.className ? d.className+' js' : 'js';
+  try{
+    if(sessionStorage.getItem('aps-seen')) d.classList.add('pl-skip');
+    if(localStorage.getItem('aps-lang')==='ar'){ d.lang='ar'; d.dir='rtl'; apsArabicFont(); }
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="nav-sentinel" id="navTop" aria-hidden="true"></div>
 
 <!-- Reusable APS logo mark (from brand guidelines) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<svg class="svg-sprite" aria-hidden="true" focusable="false">
   <defs>
     <g id="aps-mark">
       <g transform="translate(-280,-246)">
@@ -488,7 +551,7 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
 </div>
 
 <!-- ===== NAV ===== -->
-<nav class="nav" id="nav">
+<nav class="nav" id="nav" aria-label="Main">
   <a href="#top" class="nav__logo" aria-label="Agri Pro Services home">
     <svg class="lockup" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <g transform="translate(0,4) scale(0.083)">
@@ -505,11 +568,13 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
     <a href="#services" data-i18n="nav.services" data-section="services">Services</a>
     <a href="#partners" data-i18n="nav.partners" data-section="partners">Partners</a>
     <a href="#contact" data-i18n="nav.contact" data-section="contact">Contact</a>
-    <button class="lang-toggle" id="langToggle" aria-label="Switch language">العربية</button>
+    <button class="lang-toggle" id="langToggle" type="button" lang="ar" aria-label="Switch language to Arabic">العربية</button>
     <a href="#contact" class="btn btn--primary nav__cta" data-i18n="nav.cta">Get a Quote</a>
   </div>
-  <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="nav__toggle" id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
 </nav>
+
+<main id="main">
 
 <!-- ===== HERO ===== -->
 <header class="hero" id="top">
@@ -571,22 +636,22 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
       <div class="about__body reveal d1">
         <p class="body" data-i18n="about.body">We stand apart through an unwavering commitment to quality and results — ensuring seamless service from roots to roofs. By combining innovative practices with deep-rooted industry knowledge, we deliver work that consistently exceeds expectations.</p>
         <div class="values">
-          <div class="value-tile" style="--c:var(--green-deep)">
+          <div class="value-tile">
             <span class="value-tile__dot"></span>
             <h3 data-i18n="about.p1">Reliable</h3>
             <p data-i18n="about.p1d">On schedule, every visit.</p>
           </div>
-          <div class="value-tile" style="--c:var(--green)">
+          <div class="value-tile">
             <span class="value-tile__dot"></span>
             <h3 data-i18n="about.p2">Safe</h3>
             <p data-i18n="about.p2d">Family- and pet-friendly methods.</p>
           </div>
-          <div class="value-tile" style="--c:var(--lime)">
+          <div class="value-tile">
             <span class="value-tile__dot"></span>
             <h3 data-i18n="about.p3">Proven</h3>
             <p data-i18n="about.p3d">Results you can see and measure.</p>
           </div>
-          <div class="value-tile" style="--c:var(--lime-tint)">
+          <div class="value-tile">
             <span class="value-tile__dot"></span>
             <h3 data-i18n="about.p4">Sustainable</h3>
             <p data-i18n="about.p4d">Care that lasts beyond the season.</p>
@@ -681,8 +746,8 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
     <div class="about__grid">
       <div class="about__body reveal d1">
         <p class="body" data-i18n="pc.body">We treat the full range of household and commercial pests — cockroaches, ants, rodents (rats and mice), bed bugs, fleas, mosquitoes, wasps and stored-product insects. Every job starts with a full inspection to find the source and entry points, followed by a targeted treatment and a prevention plan that keeps the problem from coming back.</p>
-        <p class="body" data-i18n="pc.body2" style="margin-top:1.1em">Our products and methods are chosen to be safe for families, children and pets, and are applied by trained technicians who follow correct dosing and safety practice. For ongoing peace of mind we offer scheduled maintenance visits and rapid, same-region call-outs.</p>
-        <div class="svc__chips" style="margin-top:26px">
+        <p class="body" data-i18n="pc.body2">Our products and methods are chosen to be safe for families, children and pets, and are applied by trained technicians who follow correct dosing and safety practice. For ongoing peace of mind we offer scheduled maintenance visits and rapid, same-region call-outs.</p>
+        <div class="svc__chips svc__chips--spaced">
           <span class="chip" data-i18n="pc.c1">Cockroaches &amp; ants</span>
           <span class="chip" data-i18n="pc.c2">Rodents (rats &amp; mice)</span>
           <span class="chip" data-i18n="pc.c3">Bed bugs &amp; fleas</span>
@@ -711,16 +776,16 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
     <!-- To add a real partner: replace a tile's inner SVG with
          <img src="assets/img/partners/NAME.png" alt="Partner name" loading="lazy"> -->
     <div class="partners-grid">
-      <div class="partner-tile reveal"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><circle cx="20" cy="20" r="11" fill="currentColor" opacity=".55"/><rect x="40" y="12" width="66" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="40" y="24" width="44" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d1"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><rect x="10" y="9" width="22" height="22" rx="6" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="60" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="38" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d2"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><path d="M20 8l11 19H9Z" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="64" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="40" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d3"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="4" opacity=".55"/><rect x="42" y="12" width="58" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="42" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d4"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><rect x="9" y="9" width="10" height="22" rx="3" fill="currentColor" opacity=".55"/><rect x="22" y="9" width="10" height="22" rx="3" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="62" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="36" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><path d="M9 20a11 11 0 0 1 22 0Z" fill="currentColor" opacity=".55"/><path d="M31 20a11 11 0 0 1-22 0Z" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="60" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="44" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d1"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><rect x="10" y="10" width="20" height="20" rx="10" fill="currentColor" opacity=".35"/><rect x="18" y="10" width="20" height="20" rx="10" fill="currentColor" opacity=".55"/><rect x="48" y="12" width="56" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="48" y="24" width="40" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d2"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><path d="M20 9l9 11-9 11-9-11Z" fill="currentColor" opacity=".55"/><rect x="40" y="12" width="66" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="40" y="24" width="38" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d3"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><rect x="9" y="14" width="24" height="12" rx="6" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="58" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="46" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
-      <div class="partner-tile reveal d4"><svg class="ph" viewBox="0 0 120 40" aria-label="Partner logo placeholder"><circle cx="15" cy="20" r="7" fill="currentColor" opacity=".55"/><circle cx="27" cy="20" r="7" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="62" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="34" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="11" fill="currentColor" opacity=".55"/><rect x="40" y="12" width="66" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="40" y="24" width="44" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d1"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><rect x="10" y="9" width="22" height="22" rx="6" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="60" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="38" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d2"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><path d="M20 8l11 19H9Z" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="64" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="40" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d3"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="4" opacity=".55"/><rect x="42" y="12" width="58" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="42" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d4"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><rect x="9" y="9" width="10" height="22" rx="3" fill="currentColor" opacity=".55"/><rect x="22" y="9" width="10" height="22" rx="3" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="62" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="36" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><path d="M9 20a11 11 0 0 1 22 0Z" fill="currentColor" opacity=".55"/><path d="M31 20a11 11 0 0 1-22 0Z" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="60" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="44" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d1"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><rect x="10" y="10" width="20" height="20" rx="10" fill="currentColor" opacity=".35"/><rect x="18" y="10" width="20" height="20" rx="10" fill="currentColor" opacity=".55"/><rect x="48" y="12" width="56" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="48" y="24" width="40" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d2"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><path d="M20 9l9 11-9 11-9-11Z" fill="currentColor" opacity=".55"/><rect x="40" y="12" width="66" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="40" y="24" width="38" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d3"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><rect x="9" y="14" width="24" height="12" rx="6" fill="currentColor" opacity=".55"/><rect x="42" y="12" width="58" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="46" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
+      <div class="partner-tile reveal d4"><svg class="ph" viewBox="0 0 120 40" aria-hidden="true" focusable="false"><circle cx="15" cy="20" r="7" fill="currentColor" opacity=".55"/><circle cx="27" cy="20" r="7" fill="currentColor" opacity=".35"/><rect x="42" y="12" width="62" height="7" rx="3.5" fill="currentColor" opacity=".55"/><rect x="42" y="24" width="34" height="5" rx="2.5" fill="currentColor" opacity=".35"/></svg></div>
     </div>
     <p class="partners__note reveal" data-i18n="partners.note">Partner logos coming soon.</p>
   </div>
@@ -737,7 +802,7 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
         <div class="c-rows">
           <a class="c-row" href="tel:+96171180289">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span>
-            <div><div class="k" data-i18n="act.callK">Call us</div><div class="v" dir="ltr">+961 71 180 289</div></div>
+            <div><div class="k" data-i18n="act.callK">Call us</div><div class="v" dir="ltr">+961&nbsp;71&nbsp;180&nbsp;289</div></div>
           </a>
           <a class="c-row" href="https://wa.me/96171180289" target="_blank" rel="noopener">
             <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.5-.1l.7-.9c.2-.2.4-.2.6-.1l1.9.9c.2.1.4.2.5.3.1.3.1.7-.1 1.4Z"/></svg></span>
@@ -749,7 +814,7 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
           </a>
           <div class="c-row">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <div><div class="k" data-i18n="act.locK">Based in</div><div class="v" data-i18n="act.locV">Lebanon · Nationwide service</div></div>
+            <div><div class="k" data-i18n="act.locK">Based in</div><div class="v" data-i18n="act.locV">Saida, Lebanon · Nationwide service</div></div>
           </div>
         </div>
       </div>
@@ -760,11 +825,11 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
         <div class="row-2">
           <div class="row">
             <label for="name" data-i18n="form.name">Full name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" data-i18n-ph="form.namePh" required />
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" data-i18n-ph="form.namePh" required />
           </div>
           <div class="row">
             <label for="phone" data-i18n="form.phone">Phone</label>
-            <input id="phone" name="phone" type="tel" placeholder="+961 …" data-i18n-ph="form.phonePh" required />
+            <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+961 …" data-i18n-ph="form.phonePh" required />
           </div>
         </div>
         <div class="row">
@@ -783,18 +848,20 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
         <button type="submit" class="btn btn--primary btn--arrow"><span data-i18n="form.send">Send Request</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
-        <p class="note"><span data-i18n="form.note">Or call us directly at</span> <span dir="ltr">+961 71 180 289</span></p>
+        <p class="note"><span data-i18n="form.note">Or call us directly at</span> <span dir="ltr">+961&nbsp;71&nbsp;180&nbsp;289</span></p>
       </form>
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container">
     <div class="footer__top">
       <div class="footer__brand">
-        <svg class="lockup" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" aria-label="Agri Pro Services">
+        <svg class="lockup" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agri Pro Services">
           <g transform="translate(0,4) scale(0.083)">
             <circle class="lg-lime" cx="535.4" cy="312.43" r="66.45"/>
             <path class="lg-a" d="m488.14,399.95c-8.03-2.85-16.37-5.06-24.94-6.56-8.75-1.53-17.74-2.33-26.92-2.33h-155.58v156.42c0,28.87,7.78,55.9,21.34,79.11,18.43,31.56,47.56,56.03,82.37,68.4,16.22,5.76,33.68,8.9,51.86,8.9,9.18,0,18.17-.8,26.92-2.33v-85.81c-8.75,3.8-18.41,5.9-28.56,5.9-39.65,0-71.78-32.08-71.78-71.65v-71.65h71.78c10.44,0,20.35,2.22,29.3,6.22,3.13,1.4,6.13,3.02,9,4.83,3.97-11.66,9.07-22.79,15.2-33.25,7.95-13.55,17.58-25.98,28.63-37.01,1.14-1.14,2.3-2.26,3.48-3.38-9.98-6.44-20.74-11.78-32.11-15.82Z"/>
@@ -825,10 +892,10 @@ a.c-row:hover{background:rgba(255,255,255,.09)}
       <div>
         <h4 data-i18n="foot.contactT">Contact</h4>
         <ul>
-          <li><a href="tel:+96171180289"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><span dir="ltr">+961 71 180 289</span></a></li>
+          <li><a href="tel:+96171180289"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><span dir="ltr">+961&nbsp;71&nbsp;180&nbsp;289</span></a></li>
           <li><a href="https://wa.me/96171180289" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Z"/></svg><span data-i18n="act.waK">WhatsApp</span></a></li>
           <li><a href="https://www.instagram.com/agri.pro.services" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/></svg><span dir="ltr">@agri.pro.services</span></a></li>
-          <li><a href="#top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span data-i18n="foot.loc">Lebanon</span></a></li>
+          <li><a href="#top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span data-i18n="foot.loc">Saida, Lebanon</span></a></li>
         </ul>
       </div>
     </div>
@@ -972,29 +1039,36 @@ ar: {
 }
 };
 
+/* ============ LANGUAGE ============ */
+/* Node lists are collected once; applyLang runs on every toggle and is the
+   heaviest interaction on the page, so it must not re-query the document. */
+const $text   = document.querySelectorAll('[data-i18n]');
+const $html   = document.querySelectorAll('[data-i18n-html]');
+const $place  = document.querySelectorAll('[data-i18n-ph]');
+const langToggle = document.getElementById('langToggle');
+
 function applyLang(lang){
-  const t = I18N[lang];
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = I18N[lang], root = document.documentElement, ar = lang === 'ar';
+  root.lang = lang;
+  root.dir  = ar ? 'rtl' : 'ltr';
   document.title = t['meta.title'];
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k = el.getAttribute('data-i18n');
-    if(t[k] !== undefined) el.textContent = t[k];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
-    const k = el.getAttribute('data-i18n-html');
-    if(t[k] !== undefined) el.innerHTML = t[k];
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
-    const k = el.getAttribute('data-i18n-ph');
-    if(t[k] !== undefined) el.placeholder = t[k];
-  });
-  document.getElementById('langToggle').textContent = t['nav.lang'];
-  localStorage.setItem('aps-lang', lang);
+  if(ar) apsArabicFont();
+  $text .forEach(el=>{const v=t[el.dataset.i18n];     if(v !== undefined) el.textContent = v});
+  $html .forEach(el=>{const v=t[el.dataset.i18nHtml]; if(v !== undefined) el.innerHTML   = v});
+  $place.forEach(el=>{const v=t[el.dataset.i18nPh];   if(v !== undefined) el.placeholder = v});
+  langToggle.textContent = t['nav.lang'];
+  langToggle.lang = ar ? 'en' : 'ar';
+  langToggle.setAttribute('aria-label', ar ? 'Switch language to English' : 'Switch language to Arabic');
+  try{ localStorage.setItem('aps-lang', lang) }catch(e){}
 }
-let lang = localStorage.getItem('aps-lang') || 'en';
-applyLang(lang);
-document.getElementById('langToggle').addEventListener('click',()=>{
+
+/* The document already ships as English, so the default case costs no DOM work
+   at all — only a stored Arabic preference pays for a rewrite pass. */
+let lang = 'en';
+try{ lang = localStorage.getItem('aps-lang') === 'ar' ? 'ar' : 'en' }catch(e){}
+if(lang === 'ar') applyLang('ar');
+
+langToggle.addEventListener('click',()=>{
   lang = lang === 'en' ? 'ar' : 'en';
   applyLang(lang);
 });
@@ -1003,14 +1077,25 @@ document.getElementById('langToggle').addEventListener('click',()=>{
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ============ NAV SCROLL STATE ============ */
+/* A 1px sentinel at the scroll threshold replaces a scroll listener, so nothing
+   runs on the main thread per frame while the page moves. */
 const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 30);
-onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+new IntersectionObserver(([e])=>{
+  nav.classList.toggle('scrolled', !e.isIntersecting);
+}).observe(document.getElementById('navTop'));
 
 /* ============ MOBILE MENU ============ */
 const toggle = document.getElementById('navToggle'), links = document.getElementById('navLinks');
-toggle.addEventListener('click',()=>{links.classList.toggle('open');toggle.classList.toggle('open')});
-links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');toggle.classList.remove('open')}));
+function setMenu(open){
+  links.classList.toggle('open', open);
+  toggle.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+toggle.addEventListener('click', ()=>setMenu(!links.classList.contains('open')));
+links.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>setMenu(false)));
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && links.classList.contains('open')){ setMenu(false); toggle.focus() }
+});
 
 /* ============ ACTIVE SECTION IN NAV ============ */
 const navAnchors = [...document.querySelectorAll('.nav__links a[data-section]')];
@@ -1039,27 +1124,25 @@ const io = new IntersectionObserver(entries=>{
 const startReveals = () => document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 /* ============ PRELOADER ============ */
+/* The overlay sits directly on top of the LCP element, so its lifetime is added
+   to LCP one-for-one. It is therefore timed off DOM readiness (this script runs
+   at the end of <body>) rather than window.load, which would wait on every font. */
 const preloader = document.getElementById('preloader');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const plStart = performance.now();
 let plHidden = false;
 function hidePreloader(){
   if(plHidden) return;
   plHidden = true;
   preloader.classList.add('done');
   startReveals();
-  setTimeout(()=>preloader.remove(), 650);
+  setTimeout(()=>preloader.remove(), 350);
 }
 if(document.documentElement.classList.contains('pl-skip')){
   preloader.remove();
   startReveals();
 }else{
-  window.addEventListener('load',()=>{
-    const minShow = reduceMotion ? 0 : 1250; // let the logo wipe finish
-    setTimeout(hidePreloader, Math.max(0, minShow - (performance.now() - plStart)));
-  });
-  setTimeout(hidePreloader, 3500); // failsafe: never trap the page
-  try{sessionStorage.setItem('aps-seen','1')}catch(e){}
+  setTimeout(hidePreloader, reduceMotion ? 0 : 520); // just long enough for the logo wipe
+  try{ sessionStorage.setItem('aps-seen','1') }catch(e){}
 }
 </script>
 </body>
